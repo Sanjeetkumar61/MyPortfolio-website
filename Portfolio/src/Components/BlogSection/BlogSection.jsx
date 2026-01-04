@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const blogs = [
   {
-    title: 'AI Integration in Web Development',
-    date: 'May 2025',
+    title: "AI Integration in Web Development",
+    date: "May 2025",
     excerpt:
-      'Discover how AI is transforming web development through personalized UX, chatbots, intelligent code generation...',
+      "Discover how AI is transforming web development through personalized UX, chatbots, intelligent code generation...",
     fullContent: `AI is revolutionizing web development by enabling personalized user experiences, automating repetitive tasks, and enhancing functionality with intelligent features. 
 Key areas include:
 - AI chatbots for real-time support.
@@ -16,10 +19,10 @@ Key areas include:
 AI tools like GitHub Copilot, ChatGPT, and TensorFlow.js are helping developers build smarter apps faster than ever.`,
   },
   {
-    title: 'Top Web Design Trends in 2025',
-    date: 'April 2025',
+    title: "Top Web Design Trends in 2025",
+    date: "April 2025",
     excerpt:
-      'Explore the latest design trends including glassmorphism, 3D elements, dark mode, and motion UI...',
+      "Explore the latest design trends including glassmorphism, 3D elements, dark mode, and motion UI...",
     fullContent: `Web design in 2025 is all about user interaction and immersive experiences. Popular trends include:
 - Glassmorphism with blurry glass-like backgrounds.
 - 3D design elements for depth and realism.
@@ -27,10 +30,10 @@ AI tools like GitHub Copilot, ChatGPT, and TensorFlow.js are helping developers 
 - Voice UI and accessibility improvements.`,
   },
   {
-    title: 'Boosting SEO with React and Next.js',
-    date: 'March 2025',
+    title: "Boosting SEO with React and Next.js",
+    date: "March 2025",
     excerpt:
-      'Learn how to optimize your React apps using server-side rendering, dynamic routing, and structured metadata...',
+      "Learn how to optimize your React apps using server-side rendering, dynamic routing, and structured metadata...",
     fullContent: `React apps can struggle with SEO unless optimized properly. Using frameworks like Next.js allows:
 - Server-side rendering (SSR) for crawlable content.
 - Meta tag management with Head component.
@@ -40,47 +43,81 @@ AI tools like GitHub Copilot, ChatGPT, and TensorFlow.js are helping developers 
 ];
 
 const BlogSection = () => {
-  const [expandedIndex, setExpandedIndex] = useState(null);
-
-  const toggleReadMore = (index) => {
-    setExpandedIndex(index === expandedIndex ? null : index);
-  };
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   return (
-    <section className="py-20 px-6 md:px-20 bg-gradient-to-b from-gray-100 via-gray-50 to-white" id="blog">
+    <section
+      className="py-20 px-6 md:px-20 bg-gradient-to-b from-gray-100 via-gray-50 to-white"
+      id="blog"
+    >
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-Black mb-12">Latest Blogs</h2>
+        <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-12">
+          Latest Blogs
+        </h2>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog, index) => (
-            <div
+            <motion.div
               key={index}
               className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] text-left"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-bold text-indigo-600 mb-2">{blog.title}</h3>
+              <h3 className="text-2xl font-bold text-indigo-600 mb-2">
+                {blog.title}
+              </h3>
               <p className="text-sm text-gray-500 mb-2">{blog.date}</p>
-              <p className="text-gray-700 font-medium mb-4">
-                {blog.excerpt}
-                {expandedIndex === index && (
-                  <span className="block mt-4 text-gray-600 whitespace-pre-line">
-                    {blog.fullContent}
-                  </span>
-                )}
-              </p>
+              <p className="text-gray-700 font-medium mb-4">{blog.excerpt}</p>
+
               <button
-                onClick={() => toggleReadMore(index)}
-                className="text-indigo-600 font-semibold hover:text-indigo-800 transition duration-200"
+                onClick={() => setSelectedBlog(blog)}
+                className="text-indigo-600 font-semibold hover:text-indigo-800 transition duration-200 mt-2"
               >
-                {expandedIndex === index ? 'Show Less' : 'Read More →'}
+                Read More →
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Modal for Full Blog */}
+      <AnimatePresence>
+        {selectedBlog && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-2xl max-w-3xl w-full p-8 shadow-xl relative"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="text-3xl font-bold text-indigo-700 mb-3">
+                {selectedBlog.title}
+              </h3>
+              <p className="text-sm text-gray-500 mb-5">{selectedBlog.date}</p>
+              <p className="text-gray-700 whitespace-pre-line leading-relaxed">
+                {selectedBlog.fullContent}
+              </p>
+
+              <button
+                onClick={() => setSelectedBlog(null)}
+                className="absolute top-4 right-4 text-gray-600 hover:text-black font-bold text-xl"
+              >
+                ✕
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
 
 export default BlogSection;
-
-
