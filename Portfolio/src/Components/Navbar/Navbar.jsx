@@ -59,7 +59,7 @@ const Navbar = () => {
             className="text-2xl font-black tracking-tighter text-white cursor-pointer"
             onClick={(e) => handleNavClick(e, 'hero')}
           >
-            PORT<span className="text-cyan-400">FOLIO</span>
+            Portfolio.
           </motion.div>
 
           {/* Desktop Links */}
