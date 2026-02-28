@@ -26,6 +26,7 @@ const ContactSection = () => {
     setLoading(true);
     setError(false);
 
+    // 1️⃣ Send Admin Email
     emailjs
       .send(
         "service_72x345c",
@@ -38,13 +39,28 @@ const ContactSection = () => {
         "o9hm38NPiwE_X0GIM"
       )
       .then(() => {
+
+        // 2️⃣ Send Auto Reply to User
+        return emailjs.send(
+          "service_72x345c",
+          "template_jalpj8h",
+          {
+            name: formData.name,
+            email: formData.email,
+            message: formData.message,
+          },
+          "o9hm38NPiwE_X0GIM"
+        );
+      })
+      .then(() => {
         setLoading(false);
         setSuccess(true);
         setFormData({ name: "", email: "", message: "" });
 
         setTimeout(() => setSuccess(false), 4000);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error(err);
         setLoading(false);
         setError(true);
       });
@@ -81,7 +97,10 @@ const ContactSection = () => {
         {/* Title */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Get In <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Touch</span>
+            Get In{" "}
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              Touch
+            </span>
           </h2>
         </div>
 
@@ -97,14 +116,16 @@ const ContactSection = () => {
                 <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-cyan-400/20 text-cyan-400">
                   <info.icon size={20} />
                 </div>
-                <h3 className="font-semibold text-white text-sm">{info.label}</h3>
+                <h3 className="font-semibold text-white text-sm">
+                  {info.label}
+                </h3>
               </div>
               <p className="text-slate-300 text-sm">{info.value}</p>
             </a>
           ))}
         </div>
 
-        {/* Form */}
+        {/* Contact Form */}
         <form
           onSubmit={handleSubmit}
           className="p-8 md:p-10 rounded-xl bg-white/5 backdrop-blur-md border border-cyan-400/30 space-y-6"
@@ -116,8 +137,8 @@ const ContactSection = () => {
               placeholder="Your name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-white/10 border border-cyan-400/30 text-white placeholder-slate-400 focus:border-cyan-400 focus:outline-none"
               required
+              className="w-full px-4 py-3 rounded-lg bg-white/10 border border-cyan-400/30 text-white placeholder-slate-400 focus:border-cyan-400 focus:outline-none"
             />
 
             <input
@@ -126,8 +147,8 @@ const ContactSection = () => {
               placeholder="Your email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-white/10 border border-cyan-400/30 text-white placeholder-slate-400 focus:border-cyan-400 focus:outline-none"
               required
+              className="w-full px-4 py-3 rounded-lg bg-white/10 border border-cyan-400/30 text-white placeholder-slate-400 focus:border-cyan-400 focus:outline-none"
             />
           </div>
 
@@ -137,14 +158,14 @@ const ContactSection = () => {
             rows="6"
             value={formData.message}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg bg-white/10 border border-cyan-400/30 text-white placeholder-slate-400 focus:border-cyan-400 focus:outline-none resize-none"
             required
+            className="w-full px-4 py-3 rounded-lg bg-white/10 border border-cyan-400/30 text-white placeholder-slate-400 focus:border-cyan-400 focus:outline-none resize-none"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full md:w-auto px-8 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-400 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all cursor-pointer"
+            className="w-full md:w-auto px-8 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-400 text-slate-900 font-semibold flex items-center justify-center gap-2 transition-all"
           >
             <FaPaperPlane size={16} />
             {loading ? "Sending..." : "Send Message"}
