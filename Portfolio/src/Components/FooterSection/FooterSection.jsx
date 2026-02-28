@@ -75,7 +75,7 @@ const FooterSection = () => {
             />
             <button
               onClick={handleSubscribe}
-              className="px-4 sm:px-8 py-3 bg-cyan-500 text-black font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-xl hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all whitespace-nowrap"
+              className="px-4 sm:px-8 py-3 bg-cyan-500 text-black font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-xl hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all whitespace-nowrap cursor-pointer"
             >
               Subscribe
             </button>
@@ -102,7 +102,7 @@ const FooterSection = () => {
 
           {/* Navigation Grid */}
           <motion.div variants={itemVariants}>
-            <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-6">Navigation</h4>
+            <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-6">Go Back To Check</h4>
             <ul className="grid grid-cols-2 sm:grid-cols-1 gap-3">
               {navLinks.map((link, i) => (
                 <li key={i}>
