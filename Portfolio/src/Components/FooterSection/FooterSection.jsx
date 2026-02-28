@@ -75,7 +75,7 @@ const FooterSection = () => {
             />
             <button
               onClick={handleSubscribe}
-              className="px-4 sm:px-8 py-3 bg-cyan-500 text-black font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-xl hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all whitespace-nowrap"
+              className="px-4 sm:px-8 py-3 bg-cyan-500 text-black font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-xl hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all whitespace-nowrap cursor-pointer"
             >
               Subscribe
             </button>
