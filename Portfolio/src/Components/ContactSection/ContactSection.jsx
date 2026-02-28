@@ -27,7 +27,7 @@ const ContactSection = () => {
 
     const currentData = { ...formData }; // preserve data for delayed reply
 
-    // 1️⃣ Send Admin Email Immediately
+    // Send Admin Email Immediately
     emailjs
       .send(
         "service_72x345c",
@@ -37,7 +37,7 @@ const ContactSection = () => {
       )
       .then(() => {
 
-        // 2️⃣ Send Auto Reply After 5 Seconds
+        //Send Auto Reply After 5 Seconds
         setTimeout(() => {
           emailjs.send(
             "service_72x345c",
@@ -158,7 +158,7 @@ const ContactSection = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full md:w-auto px-8 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-400 text-slate-900 font-semibold flex items-center justify-center gap-2 transition-all"
+            className="w-full md:w-auto px-8 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-400 text-slate-900 font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
           >
             <FaPaperPlane size={16} />
             {loading ? "Sending..." : "Send Message"}
