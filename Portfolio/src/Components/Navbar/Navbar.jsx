@@ -1,111 +1,116 @@
- import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../assets/Nav/sk.png';
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+
+  useEffect(() => {
+    if (navOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [navOpen]);
 
   const links = [
-    { name: 'HOME', href: '#' },
-    { name: 'ABOUT', href: '#about' },
-    { name: 'SKILLS', href: '#skills' },
-    { name: 'PROJECTS', href: '#projects' },
-    { name: 'BLOG', href: '#blog' },
-    { name: 'CONTACT', href: '#contact' },
+    { name: 'Home', id: 'hero' },
+    { name: 'About', id: 'about' },
+    { name: 'Skills', id: 'skills' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Services', id: 'services' },
+    { name: 'Contact', id: 'contact' },
   ];
 
+  const closeMenu = () => setNavOpen(false);
+
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="bg-white shadow-md fixed w-full z-50 top-0 "
-    >
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Logo with Title */}
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center space-x-3 cursor-pointer"
-        >
-          <motion.img
-            src={logo}
-            alt="Logo"
-            className="h-8 w-8 object-cover shadow-md"
-            initial={{ rotate: -180, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            transition={{ duration: 0.7 }}
-          />
-          <h1 className="text-3xl font-bold gap-4 font-ubuntu text-indigo-600 hover:text-indigo-800">
-          Sanjeet Kumar
-          </h1>
+    <>
+      {/* Desktop Horizontal Top Navbar */}
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md "
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-2xl font-bold text-white"
+          >
+            Portfolio
+          </motion.div>
 
-        </motion.div>
-
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-6 cursor-pointer">
-          {links.map((link, i) => (
-            <motion.li
-              key={link.name}
-              whileHover={{ scale: 1.1, y: -3 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              <a
-                href={link.href}
-                className="relative px-3 py-1 rounded-md cursor-pointer font-medium text-gray-700 
-                transition duration-300 ease-in-out 
-                hover:text-white hover:bg-indigo-600"
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-8">
+            {links.map((link, i) => (
+              <motion.a
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={() => setActiveSection(link.id)}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.05 }}
+                className={`text-sm font-medium transition-all duration-300 relative group ${
+                  activeSection === link.id
+                    ? 'text-cyan-400 drop-shadow-[0_0_8px_rgba(0,245,255,0.8)]'
+                    : 'text-gray-300 hover:text-cyan-400'
+                }`}
               >
                 {link.name}
-              </a>
-            </motion.li>
-          ))}
-        </ul>
+                {activeSection === link.id && (
+                  <motion.div
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </motion.a>
+            ))}
+          </div>
 
-        {/* Hamburger Icon */}
-        <div className="md:hidden ">
+          {/* Mobile Hamburger */}
           <button
             onClick={() => setNavOpen(!navOpen)}
-            className="text-gray-700 text-2xl focus:outline-none"
-            aria-label="Toggle menu  "
+            className="md:hidden text-cyan-400 p-2 hover:bg-cyan-400/10 rounded-lg transition-all"
           >
-            {navOpen ? <FaTimes /> : <FaBars />}
+            {navOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Menu with Animation */}
-      <AnimatePresence>
-        {navOpen && (
-          <motion.ul
-            initial={{ x: '100%', opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="md:hidden bg-white px-6 pt-4 pb-6 space-y-4 shadow-lg "
-          >
-            {links.map(link => (
-              <motion.li
-                key={link.name}
-                whileHover={{ scale: 1.05, x: 10 }}
-                transition={{ type: 'spring', stiffness: 250 }}
-              >
-                <a
-                  href={link.href}
-                  onClick={() => setNavOpen(false)}
-                  className="block px-4 py-2 rounded-md font-medium text-gray-700 
-                             transition duration-300 ease-in-out 
-                             hover:text-white hover:bg-indigo-600 "
-                >
-                  {link.name}
-                </a>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {navOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-black/80 backdrop-blur-md border-b border-cyan-500/20"
+            >
+              <div className="px-6 py-4 space-y-3">
+                {links.map((link) => (
+                  <a
+                    key={link.id}
+                    href={`#${link.id}`}
+                    onClick={closeMenu}
+                    className="block px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition-all text-sm font-medium"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </>
   );
 };
 

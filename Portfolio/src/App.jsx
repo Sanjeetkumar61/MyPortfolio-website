@@ -3,6 +3,7 @@ import Navbar from './Components/Navbar/Navbar'
 import HeroSection from './Components/Hero/HeroSection'
 import AboutSection from './Components/AboutSection/AboutSection'
 import SkillsSection from './Components/SkillsSection/SkillsSection'
+import ServiceSection from './Components/ServiceSection/ServiceSection'
 import ProjectSection from './Components/ProjectSection/ProjectSection'
 import BlogSection from './Components/BlogSection/BlogSection'
 import FullBlogPage from './pages/FullBlogPage';
@@ -20,6 +21,7 @@ import FooterSection from './Components/FooterSection/FooterSection'
        <HeroSection/>
        <AboutSection/>
        <SkillsSection/>
+       <ServiceSection/>
        <ProjectSection/>
        <BlogSection/>
        <FullBlogPage/>
