@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+ import React, { useState } from "react";
 import { FaPaperPlane, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import emailjs from "@emailjs/browser";
 
@@ -26,33 +25,28 @@ const ContactSection = () => {
     setLoading(true);
     setError(false);
 
-    // 1️⃣ Send Admin Email
+    const currentData = { ...formData }; // preserve data for delayed reply
+
+    // 1️⃣ Send Admin Email Immediately
     emailjs
       .send(
         "service_72x345c",
         "template_6khbvmb",
-        {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        },
+        currentData,
         "o9hm38NPiwE_X0GIM"
       )
       .then(() => {
 
-        // 2️⃣ Send Auto Reply to User
-        return emailjs.send(
-          "service_72x345c",
-          "template_jalpj8h",
-          {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-          },
-          "o9hm38NPiwE_X0GIM"
-        );
-      })
-      .then(() => {
+        // 2️⃣ Send Auto Reply After 5 Seconds
+        setTimeout(() => {
+          emailjs.send(
+            "service_72x345c",
+            "template_jalpj8h",
+            currentData,
+            "o9hm38NPiwE_X0GIM"
+          );
+        }, 5000);
+
         setLoading(false);
         setSuccess(true);
         setFormData({ name: "", email: "", message: "" });
@@ -94,7 +88,6 @@ const ContactSection = () => {
     >
       <div className="relative z-10 max-w-5xl mx-auto">
 
-        {/* Title */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Get In{" "}
@@ -173,7 +166,7 @@ const ContactSection = () => {
 
           {success && (
             <p className="text-green-400 text-sm font-medium">
-              ✅ Message sent successfully!
+              ✅ Message sent successfully! You’ll receive a confirmation shortly.
             </p>
           )}
 
